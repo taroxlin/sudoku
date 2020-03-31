@@ -1,22 +1,37 @@
-const valide=(matrix, horz, vert, num)=>{
-    for (let i = 0; i < matrix.length; i++) {
-        const horzBox = 3 * Math.floor(horz/ 3) + Math.floor(i / 3);
-        const vertBox = 3 * Math.floor(vert/ 3) + i % 3;
-        if (matrix[horz][i] == num || matrix[i][vert] == num || matrix[horzBox][vertBox] == num) {
-            return false; 
+
+
+let validNumCheck=(horz,vert,number,matrix)=>{
+    validVert = []
+    for(let i=0;i<9;i++){
+        if(matrix[i][vert]){
+            validVert.push(matrix[i][vert])
         }
     }
-    return true;
+   for(let vertBox=Math.floor(vert/3)*3;vertBox<Math.floor(vert/3)*3+3;vertBox++){
+        for(let horzBox=Math.floor(horz/3)*3;horzBox<Math.floor(horz/3)*3+3;horzBox++){
+            if(matrix[horzBox][vertBox]&&validVert.indexOf(matrix[horzBox][vertBox])===-1){
+                validVert.push(matrix[horzBox][vertBox])
+            }
+        }
+
+    }
+    if(validVert.indexOf(number)===-1&&matrix[horz].indexOf(number)===-1){
+        return true
+    }else{
+         return false
+        }
+
 }
 
-const solv=(matrix)=>{
+
+let solv=(matrix)=>{
     for (let horz = 0; horz < 9; horz++) {
         for (let vert = 0; vert < 9; vert++) {
             if (matrix[horz][vert] == 0) {
                 for (let num = 1; num <= 9; num++) {
-                    if (valide(matrix, horz, vert, num)) {
+                    if (validNumCheck(horz,vert,num,matrix)) {
                         matrix[horz][vert] = num;
-                        if (solv(matrix)) {
+                        if(solv(matrix)){
                             return true;
                         } else {
                             matrix[horz][vert] = 0;
